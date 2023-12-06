@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_lambda_function" "hello_world_lambda" {
   function_name = var.lambda_function_name
-  runtime       = "nodejs14.x"
+  runtime       = "nodejs18.x"
   handler       = "handler.hello"
   filename      = var.serverless_zip_path
   source_code_hash = filebase64(var.serverless_zip_path)
