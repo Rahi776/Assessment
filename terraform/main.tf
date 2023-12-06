@@ -10,7 +10,7 @@ resource "aws_lambda_function" "hello_world_lambda" {
   function_name = "hello-world-lambda"
   runtime       = "nodejs18.x"
   handler       = "handler.hello"
-  filename      = "/my-lambda-function/.serverless/my-lambda-function.zip"
+  filename      = "/home/runner/work/Assessment/Assessment/my-lambda-function/.serverless/my-lambda-function.zip"
   role          = data.aws_iam_role.existing_lambda_execution_role.arn
 }
 
