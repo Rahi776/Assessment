@@ -2,31 +2,16 @@ provider "aws" {
   region = var.aws_region
 }
 
+data "aws_iam_role" "existing_lambda_execution_role" {
+  name = "lambda_execution_role"
+}
+
 resource "aws_lambda_function" "hello_world_lambda" {
   function_name = "hello-world-lambda"
   runtime       = "nodejs14.x"
   handler       = "handler.hello"
-  filename      = "${path.module}/path/to/your/deployment-package.zip" # Use path.module to reference the root of your module
-  role          = aws_iam_role.lambda_execution_role.arn
-}
-
-resource "aws_iam_role" "lambda_execution_role" {
-  name = "lambda_execution_role"
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      }
-    }
-  ]
-}
-EOF
+  filename      = "${path.module}/path/to/your/deployment-package.zip"
+  role          = data.aws_iam_role.existing_lambda_execution_role.arn
 }
 
 resource "aws_api_gateway_rest_api" "api" {
