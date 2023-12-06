@@ -1,6 +1,6 @@
 'use strict';
 
-export async function hello(event) {
+module.exports.handler = async (event) =>{
   return {
     statusCode: 200,
     body: JSON.stringify({
