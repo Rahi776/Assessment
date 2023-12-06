@@ -46,6 +46,8 @@ jobs:
           serverless deploy | tee deployment.log
           cd .serverless
           zip -r ../HelloWorldLambda.zip .
+          ls
+          pwd
 
 
 
