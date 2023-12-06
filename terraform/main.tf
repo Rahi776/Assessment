@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "your_aws_region" # Replace with your AWS region, e.g., us-east-1
+  region = "aws_region" # Replace with your AWS region, e.g., us-east-1
 }
 
 resource "aws_lambda_function" "hello_world_lambda" {
