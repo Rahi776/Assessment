@@ -1,0 +1,10 @@
+service: myfirstserverlessapp
+provider:
+  name: aws
+  runtime: nodejs10.1
+  functions:
+  hello:
+    handler: handler.hello
+
+
+
