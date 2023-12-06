@@ -43,7 +43,7 @@ jobs:
       - name: Deploy Serverless Function
         run: |
           cd my-lambda-function
-          serverless deploy
+          serverless deploy | tee deployment.log
           echo "Deployment log:"
           cat deployment.log
 
