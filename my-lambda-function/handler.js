@@ -1,10 +1,9 @@
-'use strict';
+// handler.js
+exports.hello = async (event) => {
+    // Your Lambda function logic here
+    return {
+        statusCode: 200,
+        body: JSON.stringify('Hello, World!'),
+    };
+};
 
-module.exports.handler = async (event) =>{
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Hello World!',
-    }),
-  };
-}
