@@ -1,22 +1,16 @@
 provider "aws" {
-  region = var.aws_region
+  region = "your_aws_region" # Replace with your AWS region, e.g., us-east-1
 }
 
 resource "aws_lambda_function" "hello_world_lambda" {
-  function_name = var.lambda_function_name
-  runtime       = "nodejs18.x"
+  function_name = "hello-world-lambda"
+  runtime       = "nodejs14.x"
   handler       = "handler.hello"
-  filename      = var.serverless_zip_path
-  source_code_hash = filebase64(var.serverless_zip_path)
-
-  role = aws_iam_role.lambda_exec.arn
-
-  depends_on = [
-    aws_iam_role_policy_attachment.lambda,
-  ]
+  filename      = "path/to/your/deployment-package.zip" # Replace with your deployment package path
+  role          = aws_iam_role.lambda_execution_role.arn
 }
 
-resource "aws_iam_role" "lambda_exec" {
+resource "aws_iam_role" "lambda_execution_role" {
   name = "lambda_execution_role"
 
   assume_role_policy = <<EOF
@@ -24,31 +18,26 @@ resource "aws_iam_role" "lambda_exec" {
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Action": "sts:AssumeRole",
       "Effect": "Allow",
       "Principal": {
         "Service": "lambda.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
+      }
     }
   ]
 }
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "lambda" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-  role       = aws_iam_role.lambda_exec.name
-}
-
 resource "aws_api_gateway_rest_api" "api" {
-  name        = "LambdaAPI"
-  description = "API for invoking Lambda function"
+  name        = "my-api"
+  description = "My API"
 }
 
 resource "aws_api_gateway_resource" "resource" {
   rest_api_id = aws_api_gateway_rest_api.api.id
   parent_id   = aws_api_gateway_rest_api.api.root_resource_id
-  path_part   = "{proxy+}"
+  path_part   = "hello"
 }
 
 resource "aws_api_gateway_method" "method" {
@@ -58,18 +47,21 @@ resource "aws_api_gateway_method" "method" {
   authorization = "NONE"
 }
 
-resource "aws_lambda_permission" "apigw_lambda" {
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.hello_world_lambda.arn
-  principal     = "apigateway.amazonaws.com"
+resource "aws_api_gateway_integration" "integration" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  resource_id = aws_api_gateway_resource.resource.id
+  http_method = aws_api_gateway_method.method.http_method
 
-  source_arn = "${aws_api_gateway_rest_api.api.execution_arn}/*/*"
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = aws_lambda_function.hello_world_lambda.invoke_arn
 }
 
-resource "aws_api_gateway_deployment" "api" {
-  depends_on = [aws_lambda_permission.apigw_lambda]
+resource "aws_api_gateway_deployment" "deployment" {
+  depends_on = [aws_api_gateway_integration.integration]
+
   rest_api_id = aws_api_gateway_rest_api.api.id
   stage_name  = "prod"
 }
+
 
