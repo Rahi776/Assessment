@@ -46,10 +46,6 @@ jobs:
           serverless deploy | tee deployment.log
           cd .serverless
           zip -r ../HelloWorldLambda.zip .
-          ls
-          pwd
-
-
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
