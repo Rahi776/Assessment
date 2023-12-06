@@ -8,7 +8,7 @@ data "aws_iam_role" "existing_lambda_execution_role" {
 
 resource "aws_lambda_function" "hello_world_lambda" {
   function_name = "hello-world-lambda"
-  runtime       = "nodejs14.x"
+  runtime       = "nodejs18.x"
   handler       = "handler.hello"
   filename      = "${GITHUB_WORKSPACE}/path/to/your/deployment-package.zip"
   role          = data.aws_iam_role.existing_lambda_execution_role.arn
