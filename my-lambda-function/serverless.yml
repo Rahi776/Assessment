@@ -1,10 +1,17 @@
-service: myfirstserverlessapp
+service:
+  name: my-lambda-function
+
 provider:
   name: aws
-  runtime: nodejs10.1
-  functions:
+  runtime: nodejs18.x
+
+functions:
   hello:
     handler: handler.hello
+    events:
+      - http:
+          path: /
+          method: any
 
 
 
