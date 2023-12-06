@@ -6,7 +6,7 @@ resource "aws_lambda_function" "hello_world_lambda" {
   function_name = "hello-world-lambda"
   runtime       = "nodejs14.x"
   handler       = "handler.hello"
-  filename      = "path/to/your/deployment-package.zip" # Replace with your deployment package path
+  filename      = "${path.module}/path/to/your/deployment-package.zip" # Use path.module to reference the root of your module
   role          = aws_iam_role.lambda_execution_role.arn
 }
 
@@ -63,5 +63,6 @@ resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id = aws_api_gateway_rest_api.api.id
   stage_name  = "prod"
 }
+
 
 
