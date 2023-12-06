@@ -44,8 +44,9 @@ jobs:
         run: |
           cd my-lambda-function
           serverless deploy | tee deployment.log
-          echo "Deployment log:"
-          cat deployment.log
+          cd .serverless
+          zip -r ../HelloWorldLambda.zip .
+
 
 
       - name: Set up Terraform
