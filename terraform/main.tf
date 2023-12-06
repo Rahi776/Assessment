@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "aws_region" # Replace with your AWS region, e.g., us-east-1
+  region = var.aws_region
 }
 
 resource "aws_lambda_function" "hello_world_lambda" {
