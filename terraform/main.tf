@@ -61,6 +61,11 @@ resource "aws_api_gateway_deployment" "deployment" {
   stage_name  = "prod"
 }
 
+resource "aws_lambda_function_event_invoke_config" "api_gateway_trigger" {
+  function_name = aws_lambda_function.hello_world_lambda.function_name
+  event_source_token = aws_api_gateway_integration.integration.id
+}
+
 
 
 
