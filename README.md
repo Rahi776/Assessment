@@ -16,3 +16,6 @@ in the repo settings in secrets portion. and add the variable name in GITUB ACTI
 then when you commint it will start deploying.
 if you encountered any issues you can check the GITHUB ACTIONS logs.
 Thank you
+
+#AWS Deployed Generate the end point
+once the lambda is deployed in AWS, we need to add API Gateway Trigger so it will give us End Point to access our applicaition hello world.
