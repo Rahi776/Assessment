@@ -40,8 +40,6 @@ resource "aws_api_gateway_integration" "integration" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.hello_world_lambda.invoke_arn
-  connection_type         = "INTERNET"  # Add this line
-  connection_id           = aws_api_gateway_rest_api.api.id  # Add this line
 }
 
 resource "aws_api_gateway_method_response" "response" {
@@ -61,6 +59,7 @@ resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id = aws_api_gateway_rest_api.api.id
   stage_name  = "prod"
 }
+
 
 
 
