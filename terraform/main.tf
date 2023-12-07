@@ -12,6 +12,7 @@ resource "aws_lambda_function" "hello_world_lambda" {
   handler       = "handler.hello"
   filename      = "/home/runner/work/Assessment/Assessment/my-lambda-function/.serverless/my-lambda-function.zip"
   role          = data.aws_iam_role.existing_lambda_execution_role.arn
+  source_code_hash = filebase64("${path.module}/.serverless/my-lambda-function.zip")
 }
 
 resource "aws_api_gateway_rest_api" "api" {
@@ -42,14 +43,14 @@ resource "aws_api_gateway_integration" "integration" {
   uri                     = aws_lambda_function.hello_world_lambda.invoke_arn
 }
 
-resource "aws_api_gateway_integration_response" "integration_response" {
+resource "aws_api_gateway_method_response" "response" {
   rest_api_id = aws_api_gateway_rest_api.api.id
   resource_id = aws_api_gateway_resource.resource.id
   http_method = aws_api_gateway_method.method.http_method
   status_code = "200"
 
-  response_templates = {
-    "application/json" = ""
+  response_models = {
+    "application/json" = "Empty"
   }
 }
 
@@ -59,6 +60,7 @@ resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id = aws_api_gateway_rest_api.api.id
   stage_name  = "prod"
 }
+
 
 
 
