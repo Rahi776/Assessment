@@ -1,4 +1,4 @@
-// handler.js
+/// handler.js
 exports.hello = async (event) => {
     // Your Lambda function logic here
     return {
